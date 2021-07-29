@@ -1,12 +1,13 @@
 package com.zhoutao123.example.domain.application.user.event;
 
-import com.zhoutao123.example.domain.model.user.event.AbstractUserEvent;
-import com.zhoutao123.example.domain.model.user.event.UserCreatedEvent;
-import com.zhoutao123.example.domain.model.user.event.UserEventHandle;
-import com.zhoutao123.example.domain.model.user.event.UserUpdatedEvent;
+import com.zhoutao123.example.domain.domain.model.order.event.OrderPaidEvent;
+import com.zhoutao123.example.domain.domain.model.user.UserService;
+import com.zhoutao123.example.domain.domain.model.user.event.AbstractUserEvent;
+import com.zhoutao123.example.domain.domain.model.user.event.UserCreatedEvent;
+import com.zhoutao123.example.domain.domain.model.user.event.UserEventHandle;
+import com.zhoutao123.example.domain.domain.model.user.event.UserUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class UserEventHandleImpl implements UserEventHandle {
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void onUserCreated(UserCreatedEvent event) {
@@ -38,7 +42,12 @@ public class UserEventHandleImpl implements UserEventHandle {
         if (event instanceof UserUpdatedEvent) {
             this.onUserUpdated((UserUpdatedEvent)event);
         }
+    }
 
+    @EventListener(OrderPaidEvent.class)
+    public void handle(OrderPaidEvent event) {
+        // 调用用户层服务，增加积分
+        userService.updateOrderCount(event.getUserId());
     }
 
 }

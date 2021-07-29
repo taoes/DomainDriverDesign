@@ -2,12 +2,14 @@ package com.zhoutao123.example.domain.application.user;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.zhoutao123.example.domain.base.id.UserId;
+import com.zhoutao123.example.domain.domain.model.user.User;
+import com.zhoutao123.example.domain.domain.model.user.UserReadService;
 import com.zhoutao123.example.domain.infrastructure.dao.UserChannel;
 import com.zhoutao123.example.domain.infrastructure.dao.model.UserDao;
-import com.zhoutao123.example.domain.model.user.User;
-import com.zhoutao123.example.domain.model.user.UserReadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,19 @@ public class UserReadServiceImpl implements UserReadService {
 
     @Override
     public List<User> findUserByAge(Integer age) {
-        return null;
+        List<UserDao> userDao = userChannel.findByAge(age);
+        return userDao.stream().map(converter::converterFrom).collect(Collectors.toList());
     }
 
     @Override
     public Integer count(String username) {
         throw new RuntimeException("错误的使用方法");
+    }
+
+    @Override
+    public User findById(UserId userId) {
+        UserDao userDao = userChannel.findById(userId.getId());
+        return Optional.ofNullable(userDao).map(converter::converterFrom).orElse(null);
     }
 
     @Override
