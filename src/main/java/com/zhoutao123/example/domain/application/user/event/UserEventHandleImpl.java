@@ -46,7 +46,7 @@ public class UserEventHandleImpl implements UserEventHandle {
 
     @EventListener(OrderPaidEvent.class)
     public void handle(OrderPaidEvent event) {
-        // 调用用户层服务，增加积分
+        // 调用用户层服务，增加积分,orderCount
         userService.updateOrderCount(event.getUserId());
     }
 

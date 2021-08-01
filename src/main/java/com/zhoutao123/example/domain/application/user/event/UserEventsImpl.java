@@ -30,7 +30,7 @@ public class UserEventsImpl implements UserEvents, ApplicationContextAware {
     }
 
     @Override
-    public void onUserCreate(UserId userId) {
+    public void onUserCreated(UserId userId) {
         // TODO 填充事件信息
         UserCreatedEvent userCreatedEvent = new UserCreatedEvent();
         publish(userCreatedEvent);

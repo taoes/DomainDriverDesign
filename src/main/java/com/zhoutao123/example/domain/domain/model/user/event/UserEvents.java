@@ -10,7 +10,7 @@ public interface UserEvents {
 
     void publish(AbstractUserEvent event);
 
-    void onUserCreate(UserId userId);
+    void onUserCreated(UserId userId);
 
     void onUserUpdated(UserId userId);
 

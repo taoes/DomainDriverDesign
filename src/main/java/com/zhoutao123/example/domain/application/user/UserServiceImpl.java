@@ -39,7 +39,9 @@ public class UserServiceImpl implements UserService {
         UserDao userDao = channel.save(converter.converterTo(user));
 
         // 创建完成用户发送UserCreatedEvent
-        userEvents.onUserCreate(new UserId());
+        userEvents.onUserCreated(new UserId());
+
+        //GraphQL
 
         return converter.converterFrom(userDao);
     }

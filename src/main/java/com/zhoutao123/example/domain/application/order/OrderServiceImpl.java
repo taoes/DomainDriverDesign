@@ -62,7 +62,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void close(OrderId orderId) {
         channel.close(orderId);
-
         // 发送关闭的领域事件
         orderEvents.onOrderClosed(orderId);
     }
